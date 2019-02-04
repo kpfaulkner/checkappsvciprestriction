@@ -111,7 +111,7 @@ func setIPRestrictions( client web.AppsClient , configList []configWrapper, ip s
 			for _, i := range *cfg.config.IPSecurityRestrictions {
 				if *i.Name == name {
 					*i.IPAddress = ip
-					i.Priority = &priority
+					*i.Priority = priority
 
 					_, err := client.UpdateConfiguration(ctx, cfg.resourceGroup, cfg.appServiceName, *cfg.config)
 					if err != nil {
