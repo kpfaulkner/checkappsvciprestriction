@@ -120,43 +120,43 @@ func setIPRestrictions( client web.AppsClient , configList []configWrapper, ip s
 					fmt.Printf("updated... I hope\n")
 				}
 			}
+
 		}
 	}
 }
 
 func main() {
 
-operation := os.Args[1]
+	operation := os.Args[1]
 
-// details we need to modify.
-subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+	// details we need to modify.
+	subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
 
-a, err := auth.NewAuthorizerFromEnvironment()
-if err != nil {
-	log.Fatalf("Unable to create initialiser!!! %v\n", err)
-}
+	a, err := auth.NewAuthorizerFromEnvironment()
+	if err != nil {
+		log.Fatalf("Unable to create initialiser!!! %v\n", err)
+	}
 
-client := web.NewAppsClient(subscriptionID)
-client.Authorizer = a
+	client := web.NewAppsClient(subscriptionID)
+	client.Authorizer = a
 
-appServiceList,err := getAppServiceWithPrefix( "kenfautest", client)
-if err != nil {
-	log.Fatalf("unable to get list of appservices", err)
-}
+	appServiceList,err := getAppServiceWithPrefix( "kenfautest", client)
+	if err != nil {
+		log.Fatalf("unable to get list of appservices", err)
+	}
 
-siteConfigList, err := getSiteConfigList( appServiceList, client)
-if err != nil {
-	log.Fatalf("unable to get list of configs", err)
-}
+	siteConfigList, err := getSiteConfigList( appServiceList, client)
+	if err != nil {
+		log.Fatalf("unable to get list of configs", err)
+	}
 
-if operation == "get" {
-	displayIPRestrictions( siteConfigList)
-} else if operation == "set" {
-
-	ip := os.Args[5]
-	priorityInt,_ := strconv.Atoi( os.Args[4])
-	priority := int32( priorityInt)
-	ruleName := os.Args[3]
-	setIPRestrictions(client, siteConfigList, ip, priority, ruleName )
+	if operation == "get" {
+		displayIPRestrictions( siteConfigList)
+	} else if operation == "set" {
+		ip := os.Args[5]
+		priorityInt,_ := strconv.Atoi( os.Args[4])
+		priority := int32( priorityInt)
+		ruleName := os.Args[3]
+		setIPRestrictions(client, siteConfigList, ip, priority, ruleName )
 	}
 }
